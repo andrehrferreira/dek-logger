@@ -79,10 +79,10 @@ var BugsnagTransport = /*#__PURE__*/function (_Transport) {
         return;
       }
 
-      if (typeof info.message == "string") {
-        _js["default"].notify(new Error(info.message));
-      } else {
+      if (info instanceof Error) {
         _js["default"].notify(info);
+      } else if (typeof info.message == "string") {
+        _js["default"].notify(new Error(info.message));
       }
 
       if (typeof callback == "function") return callback();

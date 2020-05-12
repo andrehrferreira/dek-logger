@@ -19,10 +19,10 @@ class BugsnagTransport extends Transport {
             if (typeof callback == "function") return callback();
             return;
         }
-        if(typeof info.message == "string") {
-            Bugsnag.notify(new Error(info.message));
-        } else {
+        if(info instanceof Error) {
             Bugsnag.notify(info);
+        } else if(typeof info.message == "string") {
+            Bugsnag.notify(new Error(info.message));
         }
         if (typeof callback == "function") return callback();
         return;
