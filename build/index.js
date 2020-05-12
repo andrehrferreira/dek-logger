@@ -58,7 +58,7 @@ var BugsnagTransport = /*#__PURE__*/function (_Transport) {
     _this.level = opts && opts.level || "silly";
 
     _js["default"].start({
-      apiKey: "c1e5a7d3213ba131cb80fca9ff5600c2",
+      apiKey: process.env.LOGGER_BUGSNAG_API_KEY,
       plugins: [_pluginExpress["default"]]
     });
 
