@@ -9,7 +9,7 @@ class BugsnagTransport extends Transport {
         this.silent = opts && opts.silent || false;
         this.level = opts && opts.level || "silly";
         Bugsnag.start({
-            apiKey: "c1e5a7d3213ba131cb80fca9ff5600c2",
+            apiKey: process.env.LOGGER_BUGSNAG_API_KEY,
             plugins: [BugsnagPluginExpress]
         });
     }
