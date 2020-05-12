@@ -5,8 +5,9 @@
     "main": "./build/index.js",
     "scripts": {
         "test": "mocha",
-        "build": "tsc -p tsconfig.build.json",
-        "lint": "eslint src/**/*.js",
+        "dev": "npm run build && node build/sample",
+        "build": "babel src -s -D -d build --presets=@babel/env ",
+        "lint": "eslint '**/*.js'",
         "lint:fix": "eslint '**/*.js' --fix"
     },
     "repository": {
@@ -42,6 +43,8 @@
         "@babel/cli": "^7.8.4",
         "@babel/core": "^7.9.6",
         "@babel/plugin-transform-typescript": "^7.9.6",
+        "@babel/polyfill": "^7.8.7",
+        "@babel/preset-env": "^7.9.6",
         "@babel/preset-typescript": "^7.9.0",
         "@dekproject/scope": "^1.1.2",
         "@types/winston": "^2.4.4",

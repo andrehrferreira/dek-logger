@@ -1,9 +1,33 @@
 import winston from "winston";
 import Bugsnag from "@bugsnag/js";
-import {
-    $
-} from "@dekproject/scope";
-import BugsnagTransport from "./winston-bugsnag";
+import Transport from "winston-transport";
+import BugsnagPluginExpress from "@bugsnag/plugin-express";
+import { $ } from "@dekproject/scope";
+class BugsnagTransport extends Transport {
+    constructor(opts) {
+        super(opts);
+        this.silent = opts && opts.silent || false;
+        this.level = opts && opts.level || "silly";
+        Bugsnag.start({
+            apiKey: "c1e5a7d3213ba131cb80fca9ff5600c2",
+            plugins: [BugsnagPluginExpress]
+        });
+    }
+    log (info, callback) {
+        setImmediate(() => this.emit("logged", info));
+        if (this.silent) {
+            if (typeof callback == "function") return callback();
+            return;
+        }
+        if(typeof info.message == "string") {
+            Bugsnag.notify(new Error(info.message));
+        } else {
+            Bugsnag.notify(info);
+        }
+        if (typeof callback == "function") return callback();
+        return;
+    }
+}
 
 export default async () => {
     try {
@@ -25,7 +49,7 @@ export default async () => {
                     new BugsnagTransport({ level: "error" })
                 ]
             });
-            // 
+         
             if (process.env.NODE_ENV !== "production") {
                 logger.add(new winston.transports.Console({
                     format: winston.format.simple()
