@@ -28,8 +28,9 @@ _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
 
             var teste = null;
             teste.error = true;
-          })["catch"](function (err) {// logger.error(err);
-            // process.exit(-1);
+          })["catch"](function (err) {
+            _scope.logger.error(err); // process.exit(-1);
+
           });
 
         case 4:

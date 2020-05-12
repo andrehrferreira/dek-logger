@@ -111,7 +111,6 @@ var _default = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.m
                   level: "error"
                 })]
               });
-              console.log("process.env.NODE_ENV === ", process.env.NODE_ENV);
 
               if (process.env.NODE_ENV !== "production") {
                 logger.add(new _winston["default"].transports.Console({
