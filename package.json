@@ -1,6 +1,6 @@
 {
     "name": "@dekproject/logger",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Logger interface plugin for DEK",
     "main": "./build/index.js",
     "scripts": {

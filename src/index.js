@@ -49,12 +49,17 @@ export default async () => {
                     new BugsnagTransport({ level: "error" })
                 ]
             });
-         
-            if (process.env.NODE_ENV !== "production") {
-                logger.add(new winston.transports.Console({
-                    format: winston.format.simple()
-                }));
+
+            let consoleWarnLevels = [];
+
+            if (process.env.NODE_ENV == "production") {
+                consoleWarnLevels =  ["warn", "info", "error"];
             }
+
+            logger.add(new winston.transports.Console({
+                format: winston.format.simple(),
+                consoleWarnLevels
+            }));
             $.set(
                 "logger",
                 logger
