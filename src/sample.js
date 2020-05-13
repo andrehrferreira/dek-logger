@@ -8,6 +8,7 @@ import { $, plugins, logger } from "@dekproject/scope";
     await plugins("./build");
 
     $.wait(["logger"], 5000).then(() => {
+        logger.debug("Test debug");
         logger.info("Test info");
         var teste = null;
         teste.error = true;

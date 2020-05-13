@@ -50,16 +50,19 @@ export default async () => {
                 ]
             });
 
-            let consoleWarnLevels = [];
 
             if (process.env.NODE_ENV == "production") {
-                consoleWarnLevels =  ["warn", "info", "error"];
+                logger.add(new winston.transports.Console({
+                    format: winston.format.simple(),
+                    consoleWarnLevels: ["warn", "info", "error"]
+                }));
+            } 
+            else {
+                logger.add(new winston.transports.Console({
+                    format: winston.format.simple(),
+                    level: "debug"
+                }));
             }
-
-            logger.add(new winston.transports.Console({
-                format: winston.format.simple(),
-                consoleWarnLevels
-            }));
             $.set(
                 "logger",
                 logger

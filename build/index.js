@@ -94,7 +94,7 @@ var BugsnagTransport = /*#__PURE__*/function (_Transport) {
 }(_winstonTransport["default"]);
 
 var _default = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-  var logger, consoleWarnLevels;
+  var logger;
   return regeneratorRuntime.wrap(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -111,16 +111,18 @@ var _default = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.m
                   level: "error"
                 })]
               });
-              consoleWarnLevels = [];
 
               if (process.env.NODE_ENV == "production") {
-                consoleWarnLevels = ["warn", "info", "error"];
+                logger.add(new _winston["default"].transports.Console({
+                  format: _winston["default"].format.simple(),
+                  consoleWarnLevels: ["warn", "info", "error"]
+                }));
+              } else {
+                logger.add(new _winston["default"].transports.Console({
+                  format: _winston["default"].format.simple(),
+                  level: "debug"
+                }));
               }
-
-              logger.add(new _winston["default"].transports.Console({
-                format: _winston["default"].format.simple(),
-                consoleWarnLevels: consoleWarnLevels
-              }));
 
               _scope.$.set("logger", logger);
 
