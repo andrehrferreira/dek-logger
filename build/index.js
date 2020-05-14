@@ -100,34 +100,35 @@ var _default = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.m
       switch (_context.prev = _context.next) {
         case 0:
           try {
+            logger = logger = _winston["default"].createLogger({
+              level: "info",
+              format: _winston["default"].format.json()
+            });
+
+            if (process.env.NODE_ENV == "production") {
+              logger.add(new _winston["default"].transports.Console({
+                format: _winston["default"].format.simple(),
+                consoleWarnLevels: ["warn", "info", "error"]
+              }));
+            } else {
+              logger.add(new _winston["default"].transports.Console({
+                format: _winston["default"].format.simple(),
+                level: "debug"
+              }));
+            }
+
             if (!Object.prototype.hasOwnProperty.call(process.env, "LOGGER_BUGSNAG_API_KEY")) {
               // eslint-disable-next-line no-console
-              console.log("[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file.");
+              console.log("[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file ");
             } else {
-              logger = _winston["default"].createLogger({
-                level: "info",
-                format: _winston["default"].format.json(),
-                transports: [new BugsnagTransport({
-                  level: "error"
-                })]
-              });
-
-              if (process.env.NODE_ENV == "production") {
-                logger.add(new _winston["default"].transports.Console({
-                  format: _winston["default"].format.simple(),
-                  consoleWarnLevels: ["warn", "info", "error"]
-                }));
-              } else {
-                logger.add(new _winston["default"].transports.Console({
-                  format: _winston["default"].format.simple(),
-                  level: "debug"
-                }));
-              }
-
-              _scope.$.set("logger", logger);
+              logger.add(new BugsnagTransport({
+                level: "error"
+              }));
 
               _scope.$.set("bugsnagexpress", _js["default"].getPlugin("express"));
             }
+
+            _scope.$.set("logger", logger);
           } catch (e) {
             // eslint-disable-next-line no-console
             console.log("[ Logger ] - ".concat(e.message));

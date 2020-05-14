@@ -19,9 +19,9 @@ class BugsnagTransport extends Transport {
             if (typeof callback == "function") return callback();
             return;
         }
-        if(info instanceof Error) {
+        if (info instanceof Error) {
             Bugsnag.notify(info);
-        } else if(typeof info.message == "string") {
+        } else if (typeof info.message == "string") {
             Bugsnag.notify(new Error(info.message));
         }
         if (typeof callback == "function") return callback();
@@ -31,47 +31,35 @@ class BugsnagTransport extends Transport {
 
 export default async () => {
     try {
-        if (
-            !Object.prototype.hasOwnProperty.call(
-                process.env,
-                "LOGGER_BUGSNAG_API_KEY"
-            )
-        ) {
+        let logger = logger = winston.createLogger({
+            level: "info",
+            format: winston.format.json()
+        });
+        if (process.env.NODE_ENV == "production") {
+            logger.add(new winston.transports.Console({
+                format: winston.format.simple(),
+                consoleWarnLevels: ["warn", "info", "error"]
+            }));
+        }
+        else {
+            logger.add(new winston.transports.Console({
+                format: winston.format.simple(),
+                level: "debug"
+            }));
+        }
+        if (!Object.prototype.hasOwnProperty.call(process.env, "LOGGER_BUGSNAG_API_KEY")) {
             // eslint-disable-next-line no-console
-            console.log(
-                "[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file."
-            );
+            console.log("[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file ");
         } else {
-            const logger = winston.createLogger({
-                level: "info",
-                format: winston.format.json(),
-                transports: [
-                    new BugsnagTransport({ level: "error" })
-                ]
-            });
-
-
-            if (process.env.NODE_ENV == "production") {
-                logger.add(new winston.transports.Console({
-                    format: winston.format.simple(),
-                    consoleWarnLevels: ["warn", "info", "error"]
-                }));
-            } 
-            else {
-                logger.add(new winston.transports.Console({
-                    format: winston.format.simple(),
-                    level: "debug"
-                }));
-            }
-            $.set(
-                "logger",
-                logger
-            );
-
+            logger.add(new BugsnagTransport({ level: "error" }));
             $.set("bugsnagexpress",
                 Bugsnag.getPlugin("express")
             );
         }
+        $.set(
+            "logger",
+            logger
+        );
     } catch (e) {
         // eslint-disable-next-line no-console
         console.log(`[ Logger ] - ${e.message}`);
