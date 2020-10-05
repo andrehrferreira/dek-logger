@@ -33,7 +33,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function () { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
@@ -79,12 +79,7 @@ var BugsnagTransport = /*#__PURE__*/function (_Transport) {
         return;
       }
 
-      if (info instanceof Error) {
-        _js["default"].notify(info);
-      } else if (typeof info.message == "string") {
-        _js["default"].notify(new Error(info.message));
-      }
-
+      if (info instanceof Error) _js["default"].notify(info);else if (typeof info.message == "string") _js["default"].notify(new Error(info.message));
       if (typeof callback == "function") return callback();
       return;
     }
@@ -100,9 +95,11 @@ var _default = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.m
       switch (_context.prev = _context.next) {
         case 0:
           try {
-            if (!Object.prototype.hasOwnProperty.call(process.env, "LOGGER_BUGSNAG_API_KEY")) {
-              // eslint-disable-next-line no-console
-              console.log("[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file.");
+            if (!Object.prototype.hasOwnProperty.call(process.env, "LOGGER_BUGSNAG_API_KEY")) {// eslint-disable-next-line no-console
+
+              /*console.log(
+                  "[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file."
+              );*/
             } else {
               logger = _winston["default"].createLogger({
                 level: "info",
