@@ -57,9 +57,9 @@ export default async () => {
         }
         if (!Object.prototype.hasOwnProperty.call(process.env, "LOGGER_BUGSNAG_API_KEY")) {
             // eslint-disable-next-line no-console
-            console.log(
+            /*console.log(
                 "[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file."
-            );
+            );*/
         } else {
             const logger = winston.createLogger({
                 level: "info",

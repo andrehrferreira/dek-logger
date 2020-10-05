@@ -89,7 +89,8 @@ var BugsnagTransport = /*#__PURE__*/function (_Transport) {
 }(_winstonTransport["default"]);
 
 var _default = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-  var logger;
+  var logger, _logger;
+
   return regeneratorRuntime.wrap(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -112,13 +113,27 @@ var _default = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.m
               }));
             }
 
-            if (!Object.prototype.hasOwnProperty.call(process.env, "LOGGER_BUGSNAG_API_KEY")) {
-              // eslint-disable-next-line no-console
-              console.log("[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file ");
+            if (!Object.prototype.hasOwnProperty.call(process.env, "LOGGER_BUGSNAG_API_KEY")) {// eslint-disable-next-line no-console
+
+              /*console.log(
+                  "[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file."
+              );*/
             } else {
-              logger.add(new BugsnagTransport({
-                level: "error"
-              }));
+              _logger = _winston["default"].createLogger({
+                level: "info",
+                format: _winston["default"].format.json(),
+                transports: [new BugsnagTransport({
+                  level: "error"
+                })]
+              });
+
+              if (process.env.NODE_ENV !== "production") {
+                _logger.add(new _winston["default"].transports.Console({
+                  format: _winston["default"].format.simple()
+                }));
+              }
+
+              _scope.$.set("logger", _logger);
 
               _scope.$.set("bugsnagexpress", _js["default"].getPlugin("express"));
             }
