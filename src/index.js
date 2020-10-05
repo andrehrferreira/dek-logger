@@ -39,18 +39,28 @@ class BugsnagTransport extends Transport {
 
 export default async () => {
     try {
-        if (
-            !Object.prototype.hasOwnProperty.call(
-                process.env,
-                "LOGGER_BUGSNAG_API_KEY"
-            )
-        ) {
-            // eslint-disable-next-line no-console
-            /*console.log(
-                "[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file."
-            );*/
-        } 
+        let logger = logger = winston.createLogger({
+            level: "info",
+            format: winston.format.json()
+        });
+        if (process.env.NODE_ENV == "production") {
+            logger.add(new winston.transports.Console({
+                format: winston.format.simple(),
+                consoleWarnLevels: ["warn", "info", "error"]
+            }));
+        }
         else {
+            logger.add(new winston.transports.Console({
+                format: winston.format.simple(),
+                level: "debug"
+            }));
+        }
+        if (!Object.prototype.hasOwnProperty.call(process.env, "LOGGER_BUGSNAG_API_KEY")) {
+            // eslint-disable-next-line no-console
+            console.log(
+                "[ LOGGER ] - There is no LOGGER_BUGSNAG_API_KEY variable in the .env file."
+            );
+        } else {
             const logger = winston.createLogger({
                 level: "info",
                 format: winston.format.json(),
@@ -64,7 +74,6 @@ export default async () => {
                     format: winston.format.simple()
                 }));
             }
-
             $.set(
                 "logger",
                 logger
@@ -74,6 +83,10 @@ export default async () => {
                 Bugsnag.getPlugin("express")
             );
         }
+        $.set(
+            "logger",
+            logger
+        );
     } catch (e) {
         // eslint-disable-next-line no-console
         console.log(`[ Logger ] - ${e.message}`);

@@ -24,6 +24,8 @@ _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
 
         case 3:
           _scope.$.wait(["logger"], 5000).then(function () {
+            _scope.logger.debug("Test debug");
+
             _scope.logger.info("Test info");
 
             var teste = null;
