@@ -14,6 +14,6 @@ import { $, plugins, logger } from "@dekproject/scope";
         teste.error = true;
     }).catch((err) => {
         logger.error(err);
-        // process.exit(-1);
+        process.exit(-1);
     });
 }) ();

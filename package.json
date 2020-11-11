@@ -1,12 +1,12 @@
 {
     "name": "@dekproject/logger",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Logger interface plugin for DEK",
     "main": "./build/index.js",
     "scripts": {
         "test": "mocha",
         "dev": "npm run build && node build/sample",
-        "build": "babel src -s -D -d build --presets=@babel/env ",
+        "build": "babel src -s -D -d build",
         "lint": "eslint '**/*.js'",
         "lint:fix": "eslint '**/*.js' --fix"
     },
@@ -21,14 +21,14 @@
         "logger"
     ],
     "author": "Gislainy Velasco <gislainy.velasco@vigiadepreco.com.br>",
+    "contributors": [
+        "Andre Ferreira <andre@vigiadepreco.com.br>"
+    ],
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/dekproject/logger/issues"
     },
     "homepage": "https://github.com/dekproject/logger#readme",
-    "contributors": [
-        "Andre Ferreira <andre@vigiadepreco.com.br>"
-    ],
     "husky": {
         "hooks": {
             "pre-commit": "npm run lint && npm run build"
